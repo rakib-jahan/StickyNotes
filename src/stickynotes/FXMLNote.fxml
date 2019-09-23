@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -13,10 +12,5 @@
          <font>
             <Font name="FontAwesome" size="12.0" />
          </font></FontAwesomeIconView>
-      <Label fx:id="labelUpdate" layoutX="180.0" layoutY="192.0" prefHeight="17.0" prefWidth="60.0" style="-fx-text-fill: #63865d;" text="Updating..." textAlignment="RIGHT">
-         <font>
-            <Font name="System Italic" size="12.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>
