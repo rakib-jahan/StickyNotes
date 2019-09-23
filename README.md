@@ -1,2 +1,2 @@
 # StickyNotes
-Simple Sticky notes project using JavaFX,SqLite as DB
+Simple Sticky notes project using JavaFX, SqLite as DB
