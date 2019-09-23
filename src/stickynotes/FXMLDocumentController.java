@@ -1,5 +1,7 @@
 package stickynotes;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -12,7 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,17 +27,21 @@ public class FXMLDocumentController implements Initializable {
     private double xOffset = 0;
     private double yOffset = 0;
 
-    @FXML
-    private Label label;
+    private float tempX = 0;
+    private float tempY = 0;
+
+    private float tempXadd = 0;
+    private float tempYadd = 0;
 
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, SQLException {
         DatabaseManager db = new DatabaseManager();
         int id = db.addNote("");
-        noteInitializer(id, "");
+        tempXadd -= 300;
+        noteInitializer(id, "", tempXadd, tempYadd);
     }
 
-    private void noteInitializer(int id, String note) {
+    private void noteInitializer(int id, String note, float x, float y) {
         try {
 
             Stage stage = new Stage();
@@ -63,6 +68,10 @@ public class FXMLDocumentController implements Initializable {
             FXMLNoteController noteController = (FXMLNoteController) loader.getController();
             noteController.initNote(id, note);
             Scene scene = new Scene(root);
+
+            stage.setX(x);
+            stage.setY(y);
+
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
@@ -73,20 +82,35 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+
             DatabaseManager db = new DatabaseManager();
             List<Note> notes = new ArrayList<>();
             notes = db.getNotes();
 
+            Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+            tempX = d.width / 2 - (300 / 2);
+            tempY = d.height / 2 - (300 / 2);
+
+            tempXadd = tempX;
+            tempYadd = tempY;
+
             if (notes.size() > 0) {
                 for (Note note : notes) {
-                    noteInitializer(note.id, note.note);
+                    tempX += 300;
+                    noteInitializer(note.id, note.note, tempX, tempY);
                 }
             } else {
                 int id = db.addNote("");
-                noteInitializer(id, "");
+                tempX += 300;
+                noteInitializer(id, "", tempX, tempY);
             }
         } catch (SQLException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    void initController(float x, float y) {
+        tempX = x;
+        tempY = y;
     }
 }
